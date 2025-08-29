@@ -1,0 +1,17 @@
+package com.saude_indigena.util;
+
+public class Constantes {
+
+    public static final String PESSOA_MSG_ADICIONADA = "Pessoa adicionada";
+    public static final String PESSOA_MSG_ATUALIZADA = "Pessoa atualizada";
+    public static final String PESSOA_MSG_FALHA_AO_ADICIONAR = "Falha ao adicionar a pessoa";
+    public static final String PESSOA_MSG_FALHA_AO_ATUALIZAR = "Falha ao atualizar a pessoa";
+    public static final String PESSOA_MSG_FALHA_AO_REMOVER = "Falha ao remover a pessoa";
+    public static final String PESSOA_MSG_FALHA_AO_VALIDAR = "Falha ao validar a pessoa";
+    public static final String PESSOA_MSG_LISTA = "Lista de pessoas";
+    public static final String PESSOA_MSG_LOCALIZADA = "Pessoa localizada";
+    public static final String PESSOA_MSG_NAO_LOCALIZADA = "Pessoa não localizada";
+    public static final String PESSOA_MSG_REMOVIDA = "Pessoa removida";
+
+    public static final String PESSOA_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos da pessoa estão inválidos";
+}
