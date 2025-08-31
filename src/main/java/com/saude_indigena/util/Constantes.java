@@ -14,4 +14,17 @@ public class Constantes {
     public static final String PESSOA_MSG_REMOVIDA = "Pessoa removida";
 
     public static final String PESSOA_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos da pessoa estão inválidos";
+
+    public static final String VACINA_MSG_ADICIONADA = "Vacina adicionada";
+    public static final String VACINA_MSG_ATUALIZADA = "Vacina atualizada";
+    public static final String VACINA_MSG_FALHA_AO_ADICIONAR = "Falha ao adicionar a vacina";
+    public static final String VACINA_MSG_FALHA_AO_ATUALIZAR = "Falha ao atualizar a vacina";
+    public static final String VACINA_MSG_FALHA_AO_REMOVER = "Falha ao remover a vacina";
+    public static final String VACINA_MSG_FALHA_AO_VALIDAR = "Falha ao validar a vacina";
+    public static final String VACINA_MSG_LISTA = "Lista de vacinas";
+    public static final String VACINA_MSG_LOCALIZADA = "Vacina localizada";
+    public static final String VACINA_MSG_NAO_LOCALIZADA = "Vacina não localizada";
+    public static final String VACINA_MSG_REMOVIDA = "Vacina removida";
+
+    public static final String VACINA_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos da pessoa estão inválidos";
 }
