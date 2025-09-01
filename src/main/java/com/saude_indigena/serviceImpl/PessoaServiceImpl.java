@@ -117,11 +117,11 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     private void validar(Pessoa pessoa) {
-        if (pessoa.getNomeCompleto() == null || pessoa.getCpf() == null || pessoa.getDataNascimento() == null || pessoa.getEtnia() == null || pessoa.getCns() == null) {
+        if (pessoa.getNomeCompleto() == null || pessoa.getCpf() == null || pessoa.getDataNascimento() == null || pessoa.getEtnia() == null || pessoa.getCns() == null || pessoa.getComunidade() == null) {
             log.error(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO + ": {}", pessoa);
             throw new ValidacaoException(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO);
         }
-        if (pessoa.getNomeCompleto().isEmpty() || pessoa.getNomeCompleto().isBlank() || pessoa.getCpf().isEmpty() || pessoa.getCpf().isBlank() || pessoa.getEtnia().isEmpty() || pessoa.getCns().isEmpty() || pessoa.getCns().isBlank()) {
+        if (pessoa.getNomeCompleto().isEmpty() || pessoa.getNomeCompleto().isBlank() || pessoa.getCpf().isEmpty() || pessoa.getCpf().isBlank() || pessoa.getEtnia().isEmpty() || pessoa.getCns().isEmpty() || pessoa.getCns().isBlank() || pessoa.getComunidade().isEmpty() || pessoa.getComunidade().isBlank()) {
             log.warn(Constantes.PESSOA_MSG_FALHA_AO_VALIDAR + ": {}", pessoa);
             throw new ValidacaoException(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO);
         }

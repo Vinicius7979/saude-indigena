@@ -3,7 +3,6 @@ package com.saude_indigena.service;
 import com.saude_indigena.dto.VacinaAtualizacaoDTO;
 import com.saude_indigena.dto.VacinaListagemDTO;
 import com.saude_indigena.excecoes.ObjetoNaoEncontradoException;
-import com.saude_indigena.model.Pessoa;
 import com.saude_indigena.model.Vacina;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
@@ -17,9 +16,9 @@ public interface VacinaService {
 
     List<VacinaListagemDTO> listarTodos(Pageable pageable);
 
-    Pessoa buscarPorUuid(UUID vacinaUuid) throws ObjetoNaoEncontradoException;
+    Vacina buscarPorUuid(UUID vacinaUuid) throws ObjetoNaoEncontradoException;
 
-    Pessoa atualizar(UUID pessoaUuid, VacinaAtualizacaoDTO dados);
+    Vacina atualizar(UUID vacinaUuid, VacinaAtualizacaoDTO dados);
 
-    void remover(UUID pessoaUuid);
+    void remover(UUID vacinaUuid);
 }
