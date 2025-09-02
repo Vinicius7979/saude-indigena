@@ -13,8 +13,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -30,6 +34,7 @@ public class VacinaServiceimpl implements VacinaService {
     @Override
     public Vacina adicionar(Vacina vacina) throws DataIntegrityViolationException {
         try {
+            this.validar(vacina);
             vacina = this.vacinaRepository.save(vacina);
             log.info(Constantes.VACINA_MSG_ADICIONADA + ": {}", vacina);
         }catch (DataIntegrityViolationException e) {
@@ -39,11 +44,13 @@ public class VacinaServiceimpl implements VacinaService {
         return vacina;
     }
 
+    @Transactional
     @Override
     public Vacina atualizar(UUID vacinaUuid, VacinaAtualizacaoDTO dados) {
         try {
             Vacina vacina = this.buscarPorUuid(vacinaUuid);
             if (vacina.isAtivo()){
+                this.validarAtualizacao(dados);
                 vacina.setNome(dados.nome());
                 vacina.setNumeroLote(dados.numeroLote());
                 vacina.setDataFabricacao(dados.dataFabricacao());
@@ -64,31 +71,53 @@ public class VacinaServiceimpl implements VacinaService {
 
     @Override
     public List<VacinaListagemDTO> listar(Pageable pageable) {
-        return List.of();
+        List<Vacina> listaVacina = this.vacinaRepository.listar(pageable);
+        return listaVacina.stream().map(VacinaListagemDTO::new).toList();
     }
 
     @Override
     public List<VacinaListagemDTO> listarTodos(Pageable pageable) {
-        return List.of();
+        List<Vacina> listaVacina = this.vacinaRepository.listarTodos(pageable);
+        return listaVacina.stream().map(VacinaListagemDTO::new).toList();
     }
 
     @Override
     public Vacina buscarPorUuid(UUID vacinaUuid) throws ObjetoNaoEncontradoException {
-        return null;
+        Optional<Vacina> vacina = this.vacinaRepository.buscarPorUuid(vacinaUuid);
+        if (vacina.isEmpty()) {
+            log.warn(Constantes.VACINA_MSG_NAO_LOCALIZADA + ": {}", vacinaUuid);
+            throw new ObjetoNaoEncontradoException(Constantes.VACINA_MSG_NAO_LOCALIZADA);
+        }
+        return vacina.get();
     }
 
+    @Transactional
     @Override
     public void remover(UUID vacinaUuid) {
-
+        try {
+            Vacina vacina = this.buscarPorUuid(vacinaUuid);
+            if (vacina.isAtivo()){
+                vacina.setRemovedAt(OffsetDateTime.now());
+                vacina.setAtivo(false);
+                this.vacinaRepository.save(vacina);
+                log.info(Constantes.VACINA_MSG_REMOVIDA + ": {}", vacina);
+            }else{
+                log.error(Constantes.VACINA_MSG_FALHA_AO_REMOVER + " - Vacina {} inativa", vacina.getNome());
+                throw new ObjetoNaoEncontradoException(Constantes.VACINA_MSG_FALHA_AO_REMOVER);
+            }
+        }catch (DataIntegrityViolationException e){
+            log.error(Constantes.VACINA_MSG_FALHA_AO_REMOVER + ": {}", e.getMessage());
+            throw e;
+        }
     }
 
-    private void validar(Vacina pessoa) {
-        if (pessoa.getNome() == null || pessoa.getNumeroLote() == null || pessoa.getDataFabricacao() == null || pessoa.getDataValidade() == null || pessoa.getFabricante() == null) {
-            log.error(Constantes.VACINA_VALIDACAO_CAMPO_INVALIDO + ": {}", pessoa);
+    private void validar(Vacina vacina) {
+        if (vacina.getNome() == null || vacina.getNumeroLote() == null || vacina.getDataFabricacao() == null || vacina.getDataValidade() == null || vacina.getFabricante() == null) {
+            log.error(Constantes.VACINA_VALIDACAO_CAMPO_INVALIDO + ": {}", vacina);
             throw new ValidacaoException(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO);
         }
-        if (pessoa.getNome().isEmpty() || pessoa.getNome().isBlank() || pessoa.getNumeroLote().isEmpty() || pessoa.getNumeroLote().isBlank()) {
-            log.warn(Constantes.VACINA_MSG_FALHA_AO_VALIDAR + ": {}", pessoa);
+        if (vacina.getNome().isEmpty() || vacina.getNome().isBlank() || vacina.getNumeroLote().isEmpty() || vacina.getNumeroLote().isBlank()) {
+            log.warn(Constantes.VACINA_MSG_FALHA_AO_VALIDAR + ": {}", vacina);
             throw new ValidacaoException(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO);
         }
     }

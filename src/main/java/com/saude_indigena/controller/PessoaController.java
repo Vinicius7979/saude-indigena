@@ -93,8 +93,8 @@ public class PessoaController {
     @GetMapping("/{pessoaUuid}")
     public ResponseEntity<Object> buscarPorUuid(@PathVariable UUID pessoaUuid) {
         Pessoa pessoa = this.pessoaService.buscarPorUuid(pessoaUuid);
-        PessoaResponseDTO pessoaResponseDTO = this.pessoaMapper.toPessoaResponseDTO(pessoa);
-        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.PESSOA_MSG_LOCALIZADA, HttpStatus.OK, pessoaResponseDTO, null);
+        PessoaResponseDTO response = this.pessoaMapper.toPessoaResponseDTO(pessoa);
+        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.PESSOA_MSG_LOCALIZADA, HttpStatus.OK, response, null);
     }
 
     @Operation(summary = "Lista as pessoas.")
