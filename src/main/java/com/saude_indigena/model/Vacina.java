@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -35,7 +34,7 @@ public class Vacina {
     private LocalDate dataValidade;
     @Enumerated(EnumType.STRING)
     private Fabricante fabricante;
-    private boolean ativo;
+    private Boolean ativo;
     @CreationTimestamp
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime createdAt;

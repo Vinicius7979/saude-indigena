@@ -49,7 +49,7 @@ public class VacinaServiceimpl implements VacinaService {
     public Vacina atualizar(UUID vacinaUuid, VacinaAtualizacaoDTO dados) {
         try {
             Vacina vacina = this.buscarPorUuid(vacinaUuid);
-            if (vacina.isAtivo()){
+            if (vacina.getAtivo()){
                 this.validarAtualizacao(dados);
                 vacina.setNome(dados.nome());
                 vacina.setNumeroLote(dados.numeroLote());
@@ -96,7 +96,7 @@ public class VacinaServiceimpl implements VacinaService {
     public void remover(UUID vacinaUuid) {
         try {
             Vacina vacina = this.buscarPorUuid(vacinaUuid);
-            if (vacina.isAtivo()){
+            if (vacina.getAtivo()){
                 vacina.setRemovedAt(OffsetDateTime.now());
                 vacina.setAtivo(false);
                 this.vacinaRepository.save(vacina);

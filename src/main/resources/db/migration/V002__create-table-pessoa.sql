@@ -2,7 +2,7 @@ CREATE TABLE saude.pessoa
 (
     id              BIGINT                          NOT NULL,
     uuid            UUID            UNIQUE          NOT NULL,
-    nome_Completo   VARCHAR(90)                     NOT NULL,
+    nome_completo   VARCHAR(90)                     NOT NULL,
     cpf             VARCHAR(11)     UNIQUE          NOT NULL,
     sexo            VARCHAR(20)                     NOT NULL,
     data_nascimento TIMESTAMP WITH TIME ZONE        NOT NULL,
