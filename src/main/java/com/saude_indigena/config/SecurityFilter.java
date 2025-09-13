@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.saude_indigena.repository.AdminRepository;
+import com.saude_indigena.repository.UsuarioRepository;
+import com.saude_indigena.serviceImpl.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,11 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.token.TokenService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 
 @Component
@@ -25,14 +25,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private final AdminRepository adminRepository;
 
-    private final usua inspetorRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Value("${api.security.token.secret}")
     private String secret;
 
-    public SecurityFilter(TokenService tokenService, AdminRepository adminRepository) {
+    public SecurityFilter(TokenService tokenService, AdminRepository adminRepository, UsuarioRepository usuarioRepository) {
         this.tokenService = tokenService;
         this.adminRepository = adminRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -55,7 +56,7 @@ public class SecurityFilter extends OncePerRequestFilter {
                         logger.error("Admin não encontrado: " + subject);
                     }
                 } else {
-                    userDetails = usuarioRepository.findByMatricula(subject);
+                    userDetails = usuarioRepository.findByUsuario(subject);
                     if (userDetails == null) {
                         logger.error("Usuario não encontrado: " + subject);
                     }
