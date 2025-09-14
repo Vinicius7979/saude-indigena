@@ -1,6 +1,11 @@
 app:
   version: ${APP_VERSION}
 
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:my-secret-key}
+
 server:
   servlet:
     context-path: ${APP_CONTEXTO}
@@ -25,8 +30,8 @@ spring:
 
 springdoc:
   info:
-    title: Saúde Indígena
-    description: Sistema de Saúde Indígena
+    title: Saï¿½de Indï¿½gena
+    description: Sistema de Saï¿½de Indï¿½gena
 
 logging:
   level:
