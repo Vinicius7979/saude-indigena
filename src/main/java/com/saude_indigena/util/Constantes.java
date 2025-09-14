@@ -28,8 +28,8 @@ public class Constantes {
 
     public static final String VACINA_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos da pessoa estão inválidos";
 
-    public static final String USUARIO_MSG_ADICIONADA = "Usuario adicionado";
-    public static final String USUARIO_MSG_ATUALIZADA = "Usuario atualizado";
+    public static final String USUARIO_MSG_ADICIONADO = "Usuario adicionado";
+    public static final String USUARIO_MSG_ATUALIZADO = "Usuario atualizado";
     public static final String USUARIO_MSG_FALHA_AO_ADICIONAR = "Falha ao adicionar a usuario";
     public static final String USUARIO_MSG_FALHA_AO_ATUALIZAR = "Falha ao atualizar o usuario";
     public static final String USUARIO_MSG_FALHA_AO_REMOVER = "Falha ao remover o usuario";
@@ -40,7 +40,7 @@ public class Constantes {
     public static final String USUARIO_MSG_REMOVIDA = "Usuario removido";
     public final static String USUARIO_MSG_LOGADO = "Usuario logado";
 
-    public static final String USUARIO_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos do usuario estão inválidos";
+    public static final String USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos do usuario estão inválidos";
 
     public final static String ADMIN_MSG_LOGADO = "Admin Logado";
 }

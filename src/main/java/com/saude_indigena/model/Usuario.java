@@ -1,5 +1,6 @@
 package com.saude_indigena.model;
 
+import com.saude_indigena.dto.UsuarioCadastroDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,20 @@ public class Usuario implements UserDetails {
     private OffsetDateTime updatedAt;
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime removedAt;
+
+    public Usuario(UUID uuid, String usuario, String encryptedPassword, UserRole role) {
+        this.uuid = UUID.randomUUID();
+        this.usuario = usuario;
+        this.password = encryptedPassword;
+        this.role = role;
+    }
+
+    public Usuario(UsuarioCadastroDTO dados) {
+        this.uuid = UUID.randomUUID();
+        this.usuario = dados.usuario();
+        this.password = dados.password();
+        this.role = dados.role();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
