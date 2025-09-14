@@ -9,8 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Long> {
-    @Query(value = "select a.usuario from saude.admin a where a.usuario = :nome", nativeQuery = true)
-    Optional<Admin> buscarPorNome(String nome);
+
+    @Query(value = "select admin.usuario from saude.admin admin where admin.usuario = :usuario", nativeQuery = true)
+    Optional<Admin> buscarPorUsuario(String usuario);
 
     UserDetails findByUsuario(String usuario);
 }
