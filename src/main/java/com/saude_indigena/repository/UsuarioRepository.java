@@ -16,7 +16,7 @@ import java.util.UUID;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    @Query(value = "select usuario.uuid, usuario.usuario, usuario.password from saude.usuario usuario where usuario.ativo is true", nativeQuery = true)
+    @Query(value = "select usuario.* from saude.usuario", nativeQuery = true)
     List<Usuario> listar(Pageable pageable);
 
     @Query(value = "select usuario.* from saude.usuario usuario where usuario.uuid = :usuarioUuid", nativeQuery = true)

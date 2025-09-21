@@ -1,6 +1,5 @@
 package com.saude_indigena.serviceImpl;
 
-import com.saude_indigena.model.Usuario;
 import com.saude_indigena.repository.AdminRepository;
 import com.saude_indigena.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
