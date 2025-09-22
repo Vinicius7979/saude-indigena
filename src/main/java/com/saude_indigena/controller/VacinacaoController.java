@@ -5,6 +5,7 @@ import com.saude_indigena.dto.VacinacaoResponseDTO;
 import com.saude_indigena.model.Vacinacao;
 import com.saude_indigena.model.mapper.VacinacaoMapper;
 import com.saude_indigena.service.VacinacaoService;
+import com.saude_indigena.util.Constantes;
 import com.saude_indigena.util.ResponseApi;
 import com.saude_indigena.util.TipoResponseApi;
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,11 +47,11 @@ public class VacinacaoController {
             @ApiResponse(responseCode = "403", description = "Acesso proibido."),
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
     })
-    @PostMapping
-    public ResponseEntity<Object> adicionar(@RequestBody VacinacaoRegistroDTO dados){
+    @PostMapping("/registrar")
+    public ResponseEntity<Object> registrar(@RequestBody VacinacaoRegistroDTO dados){
         Vacinacao vacinacao = this.vacinacaoService.registrar(dados);
         VacinacaoResponseDTO response = this.vacinacaoMapper.toVacinacaoResponseDTO(vacinacao);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/").buildAndExpand(vacinacao.getId()).toUri();
-        return ResponseApi.crudResponse(TipoResponseApi.INFO, "vacinacao registrada com sucesso", HttpStatus.CREATED, response, uri);
+        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.VACINACAO_MSG_REGISTRADO, HttpStatus.CREATED, response, uri);
     }
 }

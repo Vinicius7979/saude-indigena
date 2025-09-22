@@ -17,8 +17,10 @@ import java.util.UUID;
 @Entity
 @Table(name = "vacinacao", schema = "saude")
 public class Vacinacao {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "vacinacao_seq", sequenceName = "saude.vacinacao_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vacinacao_seq")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -47,7 +49,7 @@ public class Vacinacao {
     private OffsetDateTime removedAt;
 
     public Vacinacao(VacinacaoRegistroDTO dados){
-        this.uuid = uuid.randomUUID();
+        this.uuid = UUID.randomUUID();
         this.dataProximaDose = dados.dataProximaDose();
     }
 

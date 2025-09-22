@@ -43,4 +43,6 @@ public class Constantes {
     public static final String USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO = "Um ou mais campos do usuario estão inválidos";
 
     public final static String ADMIN_MSG_LOGADO = "Admin Logado";
+
+    public final static String VACINACAO_MSG_REGISTRADO = "Vacinação registrada";
 }
