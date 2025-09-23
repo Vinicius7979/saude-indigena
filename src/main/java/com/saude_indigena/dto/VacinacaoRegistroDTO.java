@@ -8,5 +8,5 @@ import java.util.UUID;
 public record VacinacaoRegistroDTO(@NotBlank UUID pessoaUuid,
                                    @NotBlank UUID vacinaUuid,
                                    @JsonFormat(pattern = "dd/MM/yyyy") LocalDate dataAplicacao,
-                                   LocalDate dataProximaDose) {
+                                   @JsonFormat(pattern = "dd/MM/yyyy") LocalDate dataProximaDose) {
 }

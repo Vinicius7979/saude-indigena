@@ -13,6 +13,8 @@ import com.saude_indigena.util.Constantes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 
 @Slf4j
@@ -31,6 +33,8 @@ public class VacinacaoServiceImpl implements VacinacaoService {
         this.vacinaService = vacinaService;
     }
 
+    @Transactional
+    @Override
     public Vacinacao registrar(VacinacaoRegistroDTO dados) throws DataIntegrityViolationException {
         Vacinacao vacinacao = new Vacinacao(dados);
         try {
