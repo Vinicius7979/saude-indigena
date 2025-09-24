@@ -1,5 +1,7 @@
 package com.saude_indigena.serviceImpl;
 
+import com.saude_indigena.dto.VacinaListagemDTO;
+import com.saude_indigena.dto.VacinacaoListagemDTO;
 import com.saude_indigena.dto.VacinacaoRegistroDTO;
 import com.saude_indigena.excecoes.ValidacaoException;
 import com.saude_indigena.model.Pessoa;
@@ -12,10 +14,12 @@ import com.saude_indigena.service.VacinacaoService;
 import com.saude_indigena.util.Constantes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -51,6 +55,12 @@ public class VacinacaoServiceImpl implements VacinacaoService {
             throw e;
         }
         return vacinacao;
+    }
+
+    @Override
+    public List<VacinacaoListagemDTO> listar(Pageable pageable) {
+        List<Vacinacao> lista = this.vacinacaoRepository.listar(pageable);
+        return lista.stream().map(VacinacaoListagemDTO::new).toList();
     }
 
     private void validar(VacinacaoRegistroDTO dados) {

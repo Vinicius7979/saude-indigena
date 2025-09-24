@@ -1,5 +1,7 @@
 package com.saude_indigena.controller;
 
+import com.saude_indigena.dto.VacinaListagemDTO;
+import com.saude_indigena.dto.VacinacaoListagemDTO;
 import com.saude_indigena.dto.VacinacaoRegistroDTO;
 import com.saude_indigena.dto.VacinacaoResponseDTO;
 import com.saude_indigena.model.Vacinacao;
@@ -13,14 +15,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/vacinacoes")
@@ -53,5 +55,11 @@ public class VacinacaoController {
         VacinacaoResponseDTO response = this.vacinacaoMapper.toVacinacaoResponseDTO(vacinacao);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/").buildAndExpand(vacinacao.getId()).toUri();
         return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.VACINACAO_MSG_REGISTRADO, HttpStatus.CREATED, response, uri);
+    }
+
+    @GetMapping
+    public ResponseEntity<Object> listar(@PageableDefault Pageable pageable){
+        List<VacinacaoListagemDTO> lista = this.vacinacaoService.listar(pageable);
+        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.VACINACAO_MSG_LISTA, HttpStatus.OK, lista, null);
     }
 }

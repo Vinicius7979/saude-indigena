@@ -45,4 +45,5 @@ public class Constantes {
     public final static String ADMIN_MSG_LOGADO = "Admin Logado";
 
     public final static String VACINACAO_MSG_REGISTRADO = "Vacinação registrada";
+    public final static String VACINACAO_MSG_LISTA = "Lista de vacinações";
 }
