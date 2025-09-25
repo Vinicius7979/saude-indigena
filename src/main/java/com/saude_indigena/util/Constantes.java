@@ -46,4 +46,9 @@ public class Constantes {
 
     public final static String VACINACAO_MSG_REGISTRADO = "Vacinação registrada";
     public final static String VACINACAO_MSG_LISTA = "Lista de vacinações";
+    public final static String VACINACAO_MSG_NAO_LOCALIZADA = "Vacinação não localizada";
+    public final static String VACINACAO_MSG_LOCALIZADA = "Vacinação localizada";
+    public final static String VACINACAO_MSG_REMOVIDA = "Vacinação removida";
+    public final static String VACINACAO_MSG_ATUALIZADA = "Vacinação atualizada";
+    public final static String VACINACAO_MSG_FALHA_AO_ATUALIZAR = "Falha ao atualizar a vacinação atualizada";
 }
