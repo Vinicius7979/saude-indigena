@@ -38,7 +38,7 @@ public class VacinaServiceimpl implements VacinaService {
             vacina = this.vacinaRepository.save(vacina);
             log.info(Constantes.VACINA_MSG_ADICIONADA + ": {}", vacina);
         }catch (DataIntegrityViolationException e) {
-            log.error(Constantes.VACINA_MSG_ADICIONADA + ": " + e.getMessage());
+            log.error(Constantes.VACINA_MSG_FALHA_AO_ADICIONAR + ": " + e.getMessage());
             throw e;
         }
         return vacina;

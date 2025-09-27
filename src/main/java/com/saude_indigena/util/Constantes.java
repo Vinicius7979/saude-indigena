@@ -51,4 +51,5 @@ public class Constantes {
     public final static String VACINACAO_MSG_REMOVIDA = "Vacinação removida";
     public final static String VACINACAO_MSG_ATUALIZADA = "Vacinação atualizada";
     public final static String VACINACAO_MSG_FALHA_AO_ATUALIZAR = "Falha ao atualizar a vacinação atualizada";
+    public static final String VACINACAO_MSG_FALHA_AO_REMOVER = "Falha ao remover a vacinação";
 }

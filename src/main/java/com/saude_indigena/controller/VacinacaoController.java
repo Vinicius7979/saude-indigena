@@ -126,6 +126,6 @@ public class VacinacaoController {
     @DeleteMapping("/{vacinacaoUuid}")
     public ResponseEntity<Object> removerVacinacao(@PathVariable UUID vacinacaoUuid){
         this.vacinacaoService.remover(vacinacaoUuid);
-        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.VACINA_MSG_REMOVIDA, HttpStatus.NO_CONTENT, null, null);
+        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.VACINACAO_MSG_REMOVIDA, HttpStatus.NO_CONTENT, null, null);
     }
 }

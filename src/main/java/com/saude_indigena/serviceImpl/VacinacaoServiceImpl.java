@@ -102,7 +102,7 @@ public class VacinacaoServiceImpl implements VacinacaoService {
             this.vacinacaoRepository.delete(vacinacao);
             log.info(Constantes.VACINACAO_MSG_REMOVIDA + ": {}", vacinacao);
         }catch (DataIntegrityViolationException e){
-            log.error(Constantes.VACINA_MSG_FALHA_AO_REMOVER + ": {}", e.getMessage());
+            log.error(Constantes.VACINACAO_MSG_FALHA_AO_REMOVER + ": {}", e.getMessage());
             throw e;
         }
     }

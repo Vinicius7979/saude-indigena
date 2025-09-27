@@ -45,7 +45,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             log.info(Constantes.USUARIO_MSG_ADICIONADO + ": {}", usuario);
             this.usuarioRepository.flush();
         }catch (DataIntegrityViolationException e) {
-            log.error(e.getMessage());
+            log.error(Constantes.USUARIO_MSG_FALHA_AO_ADICIONAR + ": " + e.getMessage());
             throw e;
         }
         return usuario;

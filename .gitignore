@@ -37,3 +37,4 @@ build/
 *.gz
 **/opt
 **/logs
+${project.build.directory}/
