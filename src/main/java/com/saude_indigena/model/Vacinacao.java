@@ -53,4 +53,14 @@ public class Vacinacao {
         this.dataProximaDose = dados.dataProximaDose();
     }
 
+    @Override
+    public String toString() {
+        return "Vacinacao{" +
+                "uuid=" + uuid +
+                ", pessoa=" + pessoa +
+                ", vacina=" + vacina +
+                ", dataAplicacao=" + dataAplicacao +
+                ", dataProximaDose=" + dataProximaDose +
+                '}';
+    }
 }

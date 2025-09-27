@@ -124,8 +124,8 @@ public class VacinacaoController {
             @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
     })
     @DeleteMapping("/{vacinacaoUuid}")
-    public ResponseEntity<Object> removerVacinacao(@PathVariable UUID vacinaUuid){
-        this.vacinacaoService.remover(vacinaUuid);
+    public ResponseEntity<Object> removerVacinacao(@PathVariable UUID vacinacaoUuid){
+        this.vacinacaoService.remover(vacinacaoUuid);
         return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.VACINA_MSG_REMOVIDA, HttpStatus.NO_CONTENT, null, null);
     }
 }
