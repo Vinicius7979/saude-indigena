@@ -1,6 +1,7 @@
 package com.saude_indigena.service;
 
 import com.saude_indigena.dto.PessoaAtualizacaoDTO;
+import com.saude_indigena.dto.PessoaBuscaCpfDTO;
 import com.saude_indigena.dto.PessoaListagemDTO;
 import com.saude_indigena.excecoes.ObjetoNaoEncontradoException;
 import com.saude_indigena.model.Pessoa;
@@ -17,6 +18,8 @@ public interface PessoaService {
     List<PessoaListagemDTO> listarTodos(Pageable pageable);
 
     Pessoa buscarPorUuid(UUID pessoaUuid) throws ObjetoNaoEncontradoException;
+
+    Pessoa buscarPorCpf(PessoaBuscaCpfDTO pessoaCpf) throws ObjetoNaoEncontradoException;
 
     Pessoa atualizar(UUID pessoaUuid, PessoaAtualizacaoDTO dados);
 

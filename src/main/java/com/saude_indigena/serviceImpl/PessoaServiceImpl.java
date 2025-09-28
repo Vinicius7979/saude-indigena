@@ -1,6 +1,7 @@
 package com.saude_indigena.serviceImpl;
 
 import com.saude_indigena.dto.PessoaAtualizacaoDTO;
+import com.saude_indigena.dto.PessoaBuscaCpfDTO;
 import com.saude_indigena.dto.PessoaListagemDTO;
 import com.saude_indigena.excecoes.ObjetoNaoEncontradoException;
 import com.saude_indigena.excecoes.ValidacaoException;
@@ -88,6 +89,16 @@ public class PessoaServiceImpl implements PessoaService {
         Optional<Pessoa> pessoa = this.pessoaRepository.buscarPorUuid(pessoaUuid);
         if (pessoa.isEmpty()) {
             log.warn(Constantes.PESSOA_MSG_NAO_LOCALIZADA + ": {}", pessoaUuid);
+            throw new ObjetoNaoEncontradoException(Constantes.PESSOA_MSG_NAO_LOCALIZADA);
+        }
+        return pessoa.get();
+    }
+
+    @Override
+    public Pessoa buscarPorCpf(PessoaBuscaCpfDTO dados) throws ObjetoNaoEncontradoException {
+        Optional<Pessoa> pessoa  = this.pessoaRepository.buscarPorCpf(dados.cpf());
+        if (pessoa.isEmpty()) {
+            log.warn(Constantes.PESSOA_MSG_NAO_LOCALIZADA + ": {}", dados.cpf());
             throw new ObjetoNaoEncontradoException(Constantes.PESSOA_MSG_NAO_LOCALIZADA);
         }
         return pessoa.get();

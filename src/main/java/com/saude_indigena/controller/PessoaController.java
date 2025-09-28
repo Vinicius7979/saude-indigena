@@ -1,9 +1,6 @@
 package com.saude_indigena.controller;
 
-import com.saude_indigena.dto.PessoaAtualizacaoDTO;
-import com.saude_indigena.dto.PessoaCadastroDTO;
-import com.saude_indigena.dto.PessoaListagemDTO;
-import com.saude_indigena.dto.PessoaResponseDTO;
+import com.saude_indigena.dto.*;
 import com.saude_indigena.model.Pessoa;
 import com.saude_indigena.model.mapper.PessoaMapper;
 import com.saude_indigena.service.PessoaService;
@@ -93,6 +90,25 @@ public class PessoaController {
     @GetMapping("/{pessoaUuid}")
     public ResponseEntity<Object> buscarPorUuid(@PathVariable UUID pessoaUuid) {
         Pessoa pessoa = this.pessoaService.buscarPorUuid(pessoaUuid);
+        PessoaResponseDTO response = this.pessoaMapper.toPessoaResponseDTO(pessoa);
+        return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.PESSOA_MSG_LOCALIZADA, HttpStatus.OK, response, null);
+    }
+
+    @Operation(summary = "Busca uma pessoa.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Pessoa.",
+                    content = {
+                            @Content(mediaType = "application/json",
+                                    schema = @Schema(implementation = ResponseApi.class))
+                    }),
+            @ApiResponse(responseCode = "400", description = "Parâmetros inválidos."),
+            @ApiResponse(responseCode = "401", description = "Não autorizado."),
+            @ApiResponse(responseCode = "403", description = "Acesso proibido."),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor.")
+    })
+    @PostMapping("/buscar-por-cpf")
+    public ResponseEntity<Object> buscarPorCpf(@RequestBody PessoaBuscaCpfDTO dados) {
+        Pessoa pessoa = this.pessoaService.buscarPorCpf(dados);
         PessoaResponseDTO response = this.pessoaMapper.toPessoaResponseDTO(pessoa);
         return ResponseApi.crudResponse(TipoResponseApi.INFO, Constantes.PESSOA_MSG_LOCALIZADA, HttpStatus.OK, response, null);
     }
