@@ -19,7 +19,7 @@ public interface PessoaService {
 
     Pessoa buscarPorUuid(UUID pessoaUuid) throws ObjetoNaoEncontradoException;
 
-    Pessoa buscarPorCpf(PessoaBuscaCpfDTO pessoaCpf) throws ObjetoNaoEncontradoException;
+    Pessoa buscarPorCpf(PessoaBuscaCpfDTO dados) throws ObjetoNaoEncontradoException;
 
     Pessoa atualizar(UUID pessoaUuid, PessoaAtualizacaoDTO dados);
 
