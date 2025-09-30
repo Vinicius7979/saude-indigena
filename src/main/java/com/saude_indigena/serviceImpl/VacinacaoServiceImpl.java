@@ -51,7 +51,6 @@ public class VacinacaoServiceImpl implements VacinacaoService {
             Vacina vacina = this.vacinaService.buscarPorUuid(dados.vacinaUuid());
             vacinacao.setPessoa(pessoa);
             vacinacao.setVacina(vacina);
-            vacinacao.setDataAplicacao(LocalDate.now());
             vacinacao = this.vacinacaoRepository.save(vacinacao);
             log.info(Constantes.VACINACAO_MSG_REGISTRADO + ": {}", vacinacao);
         }catch (DataIntegrityViolationException e){

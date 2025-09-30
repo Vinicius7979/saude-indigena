@@ -50,6 +50,7 @@ public class Vacinacao {
 
     public Vacinacao(VacinacaoRegistroDTO dados){
         this.uuid = UUID.randomUUID();
+        this.dataAplicacao = dados.dataAplicacao();
         this.dataProximaDose = dados.dataProximaDose();
     }
 

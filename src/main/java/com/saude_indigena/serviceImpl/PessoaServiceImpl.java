@@ -56,6 +56,7 @@ public class PessoaServiceImpl implements PessoaService {
                 pessoa.setCpf(dados.cpf());
                 pessoa.setSexo(dados.sexo());
                 pessoa.setDataNascimento(dados.dataNascimento());
+                pessoa.setComorbidade(dados.comorbidade());
                 pessoa.setEtnia(dados.etnia());
                 pessoa.setCns(dados.cns());
                 pessoa.setComunidade(dados.comunidade());

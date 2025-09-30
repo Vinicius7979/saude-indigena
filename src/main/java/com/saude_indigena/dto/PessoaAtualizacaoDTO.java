@@ -15,6 +15,8 @@ public record PessoaAtualizacaoDTO(@NotBlank
                                    @JsonFormat(pattern = "dd/MM/yyyy")
                                    LocalDate dataNascimento,
                                    @NotBlank
+                                   String comorbidade,
+                                   @NotBlank
                                    String etnia,
                                    @NotBlank
                                    @Size(min = 15, max = 15)

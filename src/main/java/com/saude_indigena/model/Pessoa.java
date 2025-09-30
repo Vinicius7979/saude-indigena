@@ -33,6 +33,7 @@ public class Pessoa {
     private Sexo sexo;
     @Column(nullable = false)
     private LocalDate dataNascimento;
+    private String comorbidade;
     @Column(nullable = false)
     private String etnia;
     @Column(unique = true, nullable = false)
@@ -49,12 +50,13 @@ public class Pessoa {
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime removedAt;
 
-    public Pessoa(UUID uuid, String nomeCompleto, String cpf, Sexo sexo, LocalDate dataNascimento, String etnia, String cns, String comunidade, boolean ativo) {
+    public Pessoa(UUID uuid, String nomeCompleto, String cpf, Sexo sexo, LocalDate dataNascimento, String comorbidade, String etnia, String cns, String comunidade, boolean ativo) {
         this.uuid = uuid;
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpf;
         this.sexo = sexo;
         this.dataNascimento = dataNascimento;
+        this.comorbidade = comorbidade;
         this.etnia = etnia;
         this.cns = cns;
         this.comunidade = comunidade;
