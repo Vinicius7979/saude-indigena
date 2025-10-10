@@ -25,25 +25,26 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
-                )
-                .build();
 //                .csrf(csrf -> csrf.disable())
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/auth/admin/login").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/vacina").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/pessoa").permitAll()
-//                        .requestMatchers(HttpMethod.POST, "/vacinacoes").permitAll()
-//                        .anyRequest().authenticated()
+//                .authorizeHttpRequests(auth -> auth
+//                        .anyRequest().permitAll()
 //                )
-//                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 //                .build();
+                .cors(cors -> {})
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/admin/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/vacina").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/pessoa").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/vacinacoes").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
     @Bean
