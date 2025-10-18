@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -30,11 +32,29 @@ public class Usuario implements UserDetails {
     @Column(unique = true, nullable = false)
     private UUID uuid;
 
+    @Column(nullable = false)
+    private String nomeCompleto;
+
+    @Column(unique = true, nullable = false)
+    private String cpf;
+
+    @Column(nullable = false)
+    private LocalDate dataNascimento;
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String telefone;
+
     @Column(unique = true, nullable = false)
     private String usuario;
 
     @Column(nullable = false)
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Cargo cargo;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -48,10 +68,16 @@ public class Usuario implements UserDetails {
     @Column(columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private OffsetDateTime removedAt;
 
-    public Usuario(UUID uuid, String usuario, String encryptedPassword, UserRole role) {
+    public Usuario(String nomeCompleto, String cpf, LocalDate dataNascimento, String email, String telefone, String usuario, String encryptedPassword, Cargo cargo, UserRole role) {
         this.uuid = UUID.randomUUID();
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.email = email;
+        this.telefone = telefone;
         this.usuario = usuario;
         this.password = encryptedPassword;
+        this.cargo = cargo;
         this.role = role;
     }
 
