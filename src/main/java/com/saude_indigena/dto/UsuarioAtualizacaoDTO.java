@@ -15,6 +15,5 @@ public record UsuarioAtualizacaoDTO(@NotBlank String nomeCompleto,
                                     @NotBlank String usuario,
                                     @NotBlank String password,
                                     @NotBlank UserRole role,
-                                    @NotBlank Cargo cargo,
-                                    Boolean ativo) {
+                                    @NotBlank Cargo cargo) {
 }

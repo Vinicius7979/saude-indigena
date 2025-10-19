@@ -57,8 +57,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         try {
             Usuario usuario = this.buscarPorUuid(usuarioUuid);
             this.validarAtualizacao(dados);
+            usuario.setNomeCompleto(dados.nomeCompleto());
+            usuario.setCpf(dados.cpf());
+            usuario.setDataNascimento(dados.dataNascimento());
+            usuario.setEmail(dados.email());
+            usuario.setTelefone(dados.telefone());
             usuario.setUsuario(dados.usuario());
             usuario.setPassword(dados.password());
+            usuario.setCargo(dados.cargo());
             this.usuarioRepository.save(usuario);
             log.info(Constantes.USUARIO_MSG_ATUALIZADO);
             return usuario;
@@ -99,7 +105,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     private void validar(Usuario usuario){
-        if (usuario.getUsuario() == null || usuario.getPassword() == null){
+        if (usuario.getUsuario() == null || usuario.getPassword() == null || usuario.getNomeCompleto() == null || usuario.getCpf() == null || usuario.getDataNascimento() == null || usuario.getEmail() == null || usuario.getTelefone() == null || usuario.getCargo() == null){
             log.error(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO + usuario);
             throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
         }
@@ -110,11 +116,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     private void validarAtualizacao(UsuarioAtualizacaoDTO dados){
-        if (dados.usuario() == null || dados.password() == null){
+        if (dados.usuario() == null || dados.password() == null || dados.nomeCompleto() == null || dados.cpf() == null || dados.dataNascimento() == null || dados.email() == null || dados.telefone() == null || dados.cargo() == null){
             log.error(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO + dados);
             throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
         }
-        if (dados.usuario().isBlank() || dados.usuario().isEmpty() || dados.password().isEmpty() || dados.password().isBlank()){
+        if (dados.usuario().isBlank() || dados.usuario().isEmpty() || dados.password().isEmpty() || dados.password().isBlank() || dados.nomeCompleto().isBlank() || dados.nomeCompleto().isEmpty() || dados.cpf().isBlank() || dados.cpf().isEmpty() || dados.email().isBlank() || dados.email().isEmpty() || dados.telefone().isBlank() || dados.telefone().isEmpty()){
             log.warn(Constantes.USUARIO_MSG_FALHA_AO_VALIDAR + ": " + dados);
             throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
         }

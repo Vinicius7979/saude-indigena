@@ -83,8 +83,14 @@ public class Usuario implements UserDetails {
 
     public Usuario(UsuarioCadastroDTO dados) {
         this.uuid = UUID.randomUUID();
+        this.nomeCompleto = dados.nomeCompleto();
+        this.cpf = dados.cpf();
+        this.dataNascimento = dados.dataNascimento();
+        this.email = dados.email();
+        this.telefone = dados.telefone();
         this.usuario = dados.usuario();
         this.password = dados.password();
+        this.cargo = dados.cargo();
         this.role = dados.role();
     }
 
