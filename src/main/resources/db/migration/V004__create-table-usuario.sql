@@ -1,4 +1,4 @@
-CREATE TABLE usuario.saude
+CREATE TABLE saude.usuario
 (
     id                  BIGINT                          NOT NULL,
     uuid                UUID            UNIQUE          NOT NULL,
