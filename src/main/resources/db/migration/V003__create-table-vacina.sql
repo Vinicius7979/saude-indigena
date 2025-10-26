@@ -5,7 +5,7 @@ CREATE TABLE saude.vacina
     nome                    VARCHAR(90)                     NOT NULL,
     numero_lote             VARCHAR(90)                     NOT NULL,
     data_fabricacao         TIMESTAMP WITHOUT TIME ZONE     NOT NULL,
-    data_nascimento         DATE                            NOT NULL,
+    data_validade           DATE                            NOT NULL,
     ativo                   BOOLEAN                         NOT NULL,
     fabricante              VARCHAR(90)                     NOT NULL,
 
