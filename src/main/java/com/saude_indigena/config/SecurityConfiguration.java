@@ -40,7 +40,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
                         // Endpoints que exigem ADMIN
-                        .requestMatchers(HttpMethod.POST, "/usuario").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/usuario").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuario").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/usuario/").hasAnyRole("USER", "ADMIN")
 
                         // Endpoints que USER e ADMIN podem acessar
                         .requestMatchers(HttpMethod.POST, "/vacina").hasAnyRole("USER", "ADMIN")
@@ -71,5 +73,5 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
+}
 }
