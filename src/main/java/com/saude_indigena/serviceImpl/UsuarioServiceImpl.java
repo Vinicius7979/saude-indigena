@@ -33,19 +33,33 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario adicionar(Usuario usuario) throws DataIntegrityViolationException {
         try {
+            // Validar antes de qualquer operação
             this.validar(usuario);
+
+            // Verificar se o usuário já existe
             if (this.usuarioRepository.findByUsuario(usuario.getUsuario()) != null) {
-                throw new ValidacaoException(Constantes.USUARIO_MSG_FALHA_AO_VALIDAR);
+                log.error("Usuário já existe: {}", usuario.getUsuario());
+                throw new ValidacaoException("Usuário já cadastrado no sistema");
             }
 
+            // Criptografar a senha
             String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getPassword());
             usuario.setPassword(encryptedPassword);
 
+            // Salvar o usuário
             usuario = this.usuarioRepository.save(usuario);
-            log.info(Constantes.USUARIO_MSG_ADICIONADO + ": {}", usuario);
+            log.info(Constantes.USUARIO_MSG_ADICIONADO + ": {}", usuario.getUsuario());
             this.usuarioRepository.flush();
-        }catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             log.error(Constantes.USUARIO_MSG_FALHA_AO_ADICIONAR + ": " + e.getMessage());
+            if (e.getMessage().contains("cpf")) {
+                throw new ValidacaoException("CPF já cadastrado no sistema");
+            } else if (e.getMessage().contains("usuario")) {
+                throw new ValidacaoException("Nome de usuário já existe");
+            }
+            throw new ValidacaoException("Erro ao cadastrar usuário: dados duplicados");
+        } catch (ValidacaoException e) {
+            // Re-lançar exceções de validação
             throw e;
         }
         return usuario;
@@ -57,20 +71,29 @@ public class UsuarioServiceImpl implements UsuarioService {
         try {
             Usuario usuario = this.buscarPorUuid(usuarioUuid);
             this.validarAtualizacao(dados);
+
             usuario.setNomeCompleto(dados.nomeCompleto());
             usuario.setCpf(dados.cpf());
             usuario.setDataNascimento(dados.dataNascimento());
             usuario.setEmail(dados.email());
             usuario.setTelefone(dados.telefone());
             usuario.setUsuario(dados.usuario());
-            usuario.setPassword(dados.password());
+
+            // Apenas atualizar senha se for fornecida
+            if (dados.password() != null && !dados.password().isEmpty()) {
+                String encryptedPassword = new BCryptPasswordEncoder().encode(dados.password());
+                usuario.setPassword(encryptedPassword);
+            }
+
             usuario.setCargo(dados.cargo());
+            usuario.setRole(dados.role());
+
             this.usuarioRepository.save(usuario);
             log.info(Constantes.USUARIO_MSG_ATUALIZADO);
             return usuario;
-        }catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             log.error(Constantes.USUARIO_MSG_FALHA_AO_ATUALIZAR + ": " + e.getMessage());
-            throw e;
+            throw new ValidacaoException("Erro ao atualizar usuário: dados duplicados");
         }
     }
 
@@ -83,7 +106,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario buscarPorUuid(UUID usuarioUuid) throws ObjetoNaoEncontradoException {
         Optional<Usuario> usuario = this.usuarioRepository.buscarPorUuid(usuarioUuid);
-        if (usuario.isEmpty()){
+        if (usuario.isEmpty()) {
             log.warn(Constantes.USUARIO_MSG_NAO_LOCALIZADA + ": {}", usuarioUuid);
             throw new ObjetoNaoEncontradoException(Constantes.USUARIO_MSG_NAO_LOCALIZADA);
         }
@@ -97,32 +120,83 @@ public class UsuarioServiceImpl implements UsuarioService {
             Usuario usuario = this.buscarPorUuid(usuarioUuid);
             usuario.setRemovedAt(OffsetDateTime.now());
             this.usuarioRepository.delete(usuario);
-            log.info(Constantes.USUARIO_MSG_REMOVIDA + ": {}", usuario);
-        }catch (DataIntegrityViolationException e){
+            log.info(Constantes.USUARIO_MSG_REMOVIDA + ": {}", usuario.getUsuario());
+        } catch (DataIntegrityViolationException e) {
             log.error(Constantes.USUARIO_MSG_FALHA_AO_REMOVER + ": {}", e.getMessage());
             throw e;
         }
     }
 
-    private void validar(Usuario usuario){
-        if (usuario.getUsuario() == null || usuario.getPassword() == null || usuario.getNomeCompleto() == null || usuario.getCpf() == null || usuario.getDataNascimento() == null || usuario.getEmail() == null || usuario.getTelefone() == null || usuario.getCargo() == null){
-            log.error(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO + usuario);
-            throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
+    private void validar(Usuario usuario) {
+        // Validar campos obrigatórios
+        if (usuario.getUsuario() == null || usuario.getUsuario().isEmpty() || usuario.getUsuario().isBlank()) {
+            log.error("Campo 'usuário' inválido");
+            throw new ValidacaoException("Campo 'usuário' é obrigatório");
         }
-        if (usuario.getUsuario().isBlank() || usuario.getUsuario().isEmpty() || usuario.getPassword().isEmpty() || usuario.getPassword().isBlank()){
-            log.warn(Constantes.USUARIO_MSG_FALHA_AO_VALIDAR + ": " + usuario);
-            throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
+
+        if (usuario.getPassword() == null || usuario.getPassword().isEmpty() || usuario.getPassword().isBlank()) {
+            log.error("Campo 'senha' inválido");
+            throw new ValidacaoException("Campo 'senha' é obrigatório");
         }
+
+        if (usuario.getNomeCompleto() == null || usuario.getNomeCompleto().isEmpty() || usuario.getNomeCompleto().isBlank()) {
+            log.error("Campo 'nome completo' inválido");
+            throw new ValidacaoException("Campo 'nome completo' é obrigatório");
+        }
+
+        if (usuario.getCpf() == null || usuario.getCpf().isEmpty() || usuario.getCpf().isBlank()) {
+            log.error("Campo 'CPF' inválido");
+            throw new ValidacaoException("Campo 'CPF' é obrigatório");
+        }
+
+        if (usuario.getCpf().length() != 11) {
+            log.error("CPF com tamanho inválido: {}", usuario.getCpf().length());
+            throw new ValidacaoException("CPF deve ter exatamente 11 dígitos");
+        }
+
+        if (usuario.getDataNascimento() == null) {
+            log.error("Campo 'data de nascimento' inválido");
+            throw new ValidacaoException("Campo 'data de nascimento' é obrigatório");
+        }
+
+        if (usuario.getEmail() == null || usuario.getEmail().isEmpty() || usuario.getEmail().isBlank()) {
+            log.error("Campo 'email' inválido");
+            throw new ValidacaoException("Campo 'email' é obrigatório");
+        }
+
+        // Validar formato do email
+        if (!usuario.getEmail().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            log.error("Email com formato inválido: {}", usuario.getEmail());
+            throw new ValidacaoException("Email com formato inválido");
+        }
+
+        if (usuario.getRole() == null) {
+            log.error("Campo 'role' inválido");
+            throw new ValidacaoException("Campo 'perfil (role)' é obrigatório");
+        }
+
+        log.info("Validação do usuário '{}' concluída com sucesso", usuario.getUsuario());
     }
 
-    private void validarAtualizacao(UsuarioAtualizacaoDTO dados){
-        if (dados.usuario() == null || dados.password() == null || dados.nomeCompleto() == null || dados.cpf() == null || dados.dataNascimento() == null || dados.email() == null || dados.telefone() == null || dados.cargo() == null){
-            log.error(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO + dados);
-            throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
+    private void validarAtualizacao(UsuarioAtualizacaoDTO dados) {
+        if (dados.usuario() == null || dados.usuario().isEmpty() || dados.usuario().isBlank()) {
+            log.error("Campo 'usuário' inválido na atualização");
+            throw new ValidacaoException("Campo 'usuário' é obrigatório");
         }
-        if (dados.usuario().isBlank() || dados.usuario().isEmpty() || dados.password().isEmpty() || dados.password().isBlank() || dados.nomeCompleto().isBlank() || dados.nomeCompleto().isEmpty() || dados.cpf().isBlank() || dados.cpf().isEmpty() || dados.email().isBlank() || dados.email().isEmpty() || dados.telefone().isBlank() || dados.telefone().isEmpty()){
-            log.warn(Constantes.USUARIO_MSG_FALHA_AO_VALIDAR + ": " + dados);
-            throw new ValidacaoException(Constantes.USUARIO_MSG_VALIDACAO_CAMPO_INVALIDO);
+
+        if (dados.nomeCompleto() == null || dados.nomeCompleto().isEmpty() || dados.nomeCompleto().isBlank()) {
+            log.error("Campo 'nome completo' inválido na atualização");
+            throw new ValidacaoException("Campo 'nome completo' é obrigatório");
+        }
+
+        if (dados.cpf() == null || dados.cpf().isEmpty() || dados.cpf().isBlank()) {
+            log.error("Campo 'CPF' inválido na atualização");
+            throw new ValidacaoException("Campo 'CPF' é obrigatório");
+        }
+
+        if (dados.email() == null || dados.email().isEmpty() || dados.email().isBlank()) {
+            log.error("Campo 'email' inválido na atualização");
+            throw new ValidacaoException("Campo 'email' é obrigatório");
         }
     }
 }
