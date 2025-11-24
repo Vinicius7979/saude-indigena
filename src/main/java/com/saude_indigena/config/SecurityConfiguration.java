@@ -46,19 +46,19 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/v1/pessoa/buscar-por-cpf").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/pessoa/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/pessoa/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/pessoa/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/pessoa/**").hasAnyRole("USER", "ADMIN")
 
                         // ✅ CORRIGIDO: Endpoints de vacina - prefixo correto
                         .requestMatchers(HttpMethod.POST, "/api/v1/vacina").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/vacina/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/vacina/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/vacina/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/vacina/**").hasAnyRole("USER", "ADMIN")
 
                         // ✅ CORRIGIDO: Endpoints de vacinação - prefixo correto
                         .requestMatchers(HttpMethod.POST, "/api/v1/vacinacoes/registrar").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/vacinacoes/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/vacinacoes/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/vacinacoes/**").hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/vacinacoes/**").hasAnyRole("USER", "ADMIN")
 
                         // Perfil do usuário
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuario/perfil").hasAnyRole("USER", "ADMIN")
