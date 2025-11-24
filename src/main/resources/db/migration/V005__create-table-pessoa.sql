@@ -8,6 +8,7 @@ CREATE TABLE saude.pessoa
     data_nascimento TIMESTAMP WITH TIME ZONE        NOT NULL,
     etnia           VARCHAR(50)                     NOT NULL,
     cns             VARCHAR(15)     UNIQUE          NOT NULL,
+    comorbidade     VARCHAR(90)
     comunidade      VARCHAR(90)                     NOT NULL,
     ativo           BOOLEAN,
 
