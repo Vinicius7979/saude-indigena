@@ -22,5 +22,6 @@ public record PessoaAtualizacaoDTO(@NotBlank
                                    @Size(min = 15, max = 15)
                                    String cns,
                                    @NotBlank
-                                   String comunidade) {
+                                   String comunidade,
+                                   Boolean ativo) {
 }
