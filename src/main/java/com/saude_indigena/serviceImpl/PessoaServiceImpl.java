@@ -62,6 +62,9 @@ public class PessoaServiceImpl implements PessoaService {
                 pessoa.setEtnia(dados.etnia());
                 pessoa.setCns(dados.cns());
                 pessoa.setComunidade(dados.comunidade());
+                if (dados.ativo() != null) {
+                    pessoa.setAtivo(dados.ativo());
+                }
                 this.pessoaRepository.save(pessoa);
                 log.info(Constantes.PESSOA_MSG_ATUALIZADA);
                 return pessoa;
