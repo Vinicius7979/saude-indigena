@@ -10,7 +10,6 @@ public record PessoaCadastroDTO(@NotBlank
                                 String nomeCompleto,
                                 @Size(min = 11, max = 11)
                                 String cpf,
-                                @NotBlank
                                 Sexo sexo,
                                 @JsonFormat(pattern = "dd/MM/yyyy")
                                 LocalDate dataNascimento,
