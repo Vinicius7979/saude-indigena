@@ -18,15 +18,14 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class VacinaServiceimpl implements VacinaService {
+public class VacinaServiceImpl implements VacinaService {
 
     private final VacinaRepository vacinaRepository;
 
-    public VacinaServiceimpl(VacinaRepository vacinaRepository) {
+    public VacinaServiceImpl(VacinaRepository vacinaRepository) {
         this.vacinaRepository = vacinaRepository;
     }
 
