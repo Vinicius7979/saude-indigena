@@ -50,7 +50,6 @@ public class PessoaServiceImpl implements PessoaService {
     public Pessoa atualizar(UUID pessoaUuid, PessoaAtualizacaoDTO dados) {
         try {
             Pessoa pessoa = this.buscarPorUuid(pessoaUuid);
-            if (pessoa.isAtivo()) {
                 this.validarAtualizacao(dados);
                 pessoa.setNomeCompleto(dados.nomeCompleto());
                 pessoa.setCpf(dados.cpf());
@@ -68,10 +67,6 @@ public class PessoaServiceImpl implements PessoaService {
                 this.pessoaRepository.save(pessoa);
                 log.info(Constantes.PESSOA_MSG_ATUALIZADA);
                 return pessoa;
-            } else {
-                log.error(Constantes.PESSOA_MSG_FALHA_AO_ATUALIZAR + ": Pessoa {} inativa", pessoa.getNomeCompleto());
-                throw new ObjetoNaoEncontradoException(Constantes.PESSOA_MSG_FALHA_AO_ATUALIZAR);
-            }
         } catch (DataIntegrityViolationException e) {
             log.error(Constantes.PESSOA_MSG_FALHA_AO_ATUALIZAR + ": {}", e.getMessage());
             throw e;
