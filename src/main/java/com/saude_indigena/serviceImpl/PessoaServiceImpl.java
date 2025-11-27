@@ -138,11 +138,11 @@ public class PessoaServiceImpl implements PessoaService {
     }
 
     private void validarAtualizacao(PessoaAtualizacaoDTO dados) {
-        if (dados.nomeCompleto() == null || dados.cpf() == null || dados.dataNascimento() == null || dados.etnia() == null || dados.cns() == null || dados.comunidade() == null || dados.comorbidade() == null) {
+        if (dados.nomeCompleto() == null || dados.cpf() == null || dados.dataNascimento() == null || dados.etnia() == null || dados.cns() == null || dados.comunidade() == null) {
             log.error(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO + ": {}", dados);
             throw new ValidacaoException(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO);
         }
-        if (dados.nomeCompleto().isEmpty() || dados.nomeCompleto().isBlank() || dados.cpf().isEmpty() || dados.cpf().isBlank() || dados.etnia().isEmpty() || dados.etnia().isBlank() || dados.cns().isEmpty() || dados.cns().isBlank() || dados.comunidade().isEmpty() || dados.comunidade().isBlank() || dados.comorbidade().isBlank() || dados.comorbidade().isEmpty()) {
+        if (dados.nomeCompleto().isEmpty() || dados.nomeCompleto().isBlank() || dados.cpf().isEmpty() || dados.cpf().isBlank() || dados.etnia().isEmpty() || dados.etnia().isBlank() || dados.cns().isEmpty() || dados.cns().isBlank() || dados.comunidade().isEmpty() || dados.comunidade().isBlank()) {
             log.warn(Constantes.PESSOA_MSG_FALHA_AO_VALIDAR + ": {}", dados);
             throw new ValidacaoException(Constantes.PESSOA_VALIDACAO_CAMPO_INVALIDO);
         }
