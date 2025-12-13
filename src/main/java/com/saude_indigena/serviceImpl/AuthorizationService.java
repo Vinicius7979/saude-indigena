@@ -2,12 +2,14 @@ package com.saude_indigena.serviceImpl;
 
 import com.saude_indigena.repository.AdminRepository;
 import com.saude_indigena.repository.UsuarioRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class AuthorizationService implements UserDetailsService {
 
     private final AdminRepository adminRepository;
@@ -20,27 +22,22 @@ public class AuthorizationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // ✅ CORRIGIDO: Buscar primeiro em Usuario, depois em Admin
-        // Isso permite que usuários comuns façam login pelo /auth/login
 
-        System.out.println("🔍 Buscando usuário: " + username);
+        log.info("Buscando usuário: " + username);
 
-        // Tentar buscar como Usuario primeiro
         UserDetails user = usuarioRepository.findByUsuario(username);
         if (user != null) {
-            System.out.println("✅ Encontrado como USUARIO: " + username);
+            log.info("Encontrado como USUARIO: " + username);
             return user;
         }
 
-        // Se não encontrou, tentar buscar como Admin
         UserDetails admin = adminRepository.findByUsuario(username);
         if (admin != null) {
-            System.out.println("✅ Encontrado como ADMIN: " + username);
+            log.info("Encontrado como ADMIN: " + username);
             return admin;
         }
 
-        // Se não encontrou em nenhuma tabela
-        System.out.println("❌ Usuário não encontrado: " + username);
+        log.warn("Usuário não encontrado: " + username);
         throw new UsernameNotFoundException("Usuário não encontrado: " + username);
     }
 }

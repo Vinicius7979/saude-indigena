@@ -59,7 +59,6 @@ public class SecurityFilter extends OncePerRequestFilter {
                 if (userDetails != null) {
                     log.info("Encontrado na tabela ADMIN: " + subject);
                 } else {
-                    // Se não encontrou em admin, buscar em usuario
                     userDetails = usuarioRepository.findByUsuario(subject);
 
                     if (userDetails != null) {
