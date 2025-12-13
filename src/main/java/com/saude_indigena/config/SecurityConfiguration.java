@@ -29,41 +29,35 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Endpoints de autenticação (públicos)
+
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/admin/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
 
-                        // ✅ CORRIGIDO: Endpoints de usuário - USER e ADMIN podem acessar
                         .requestMatchers(HttpMethod.POST, "/api/v1/usuario").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuario").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuario/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/usuario/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/usuario/**").hasAnyRole("ADMIN")
 
-                        // ✅ CORRIGIDO: Endpoints de pessoa - prefixo correto
                         .requestMatchers(HttpMethod.POST, "/api/v1/pessoa").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/v1/pessoa/buscar-por-cpf").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/pessoa/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/pessoa/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/pessoa/**").hasAnyRole("USER", "ADMIN")
 
-                        // ✅ CORRIGIDO: Endpoints de vacina - prefixo correto
                         .requestMatchers(HttpMethod.POST, "/api/v1/vacina").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/vacina/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/vacina/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/vacina/**").hasAnyRole("USER", "ADMIN")
 
-                        // ✅ CORRIGIDO: Endpoints de vacinação - prefixo correto
                         .requestMatchers(HttpMethod.POST, "/api/v1/vacinacoes/registrar").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/v1/vacinacoes/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/vacinacoes/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/vacinacoes/**").hasAnyRole("USER", "ADMIN")
 
-                        // Perfil do usuário
                         .requestMatchers(HttpMethod.GET, "/api/v1/usuario/perfil").hasAnyRole("USER", "ADMIN")
 
-                        // Qualquer outra requisição precisa estar autenticada
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
