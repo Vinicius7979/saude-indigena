@@ -11,6 +11,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class SecurityFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
     private final AdminRepository adminRepository;
@@ -48,47 +50,44 @@ public class SecurityFilter extends OncePerRequestFilter {
                 String subject = jwt.getSubject();
                 String role = jwt.getClaim("role").asString();
 
-                logger.info("🔐 Token validado - Usuário: " + subject + " | Role: " + role);
+                log.info("Token validado - Usuário: " + subject + " | Role: " + role);
 
                 UserDetails userDetails = null;
 
-                // ✅ BUSCAR SEMPRE NA TABELA ADMIN PRIMEIRO (para admins criados via cadastro)
                 userDetails = adminRepository.findByUsuario(subject);
 
                 if (userDetails != null) {
-                    logger.info("✅ Encontrado na tabela ADMIN: " + subject);
+                    log.info("Encontrado na tabela ADMIN: " + subject);
                 } else {
                     // Se não encontrou em admin, buscar em usuario
                     userDetails = usuarioRepository.findByUsuario(subject);
 
                     if (userDetails != null) {
-                        logger.info("✅ Encontrado na tabela USUARIO: " + subject);
+                        log.info("Encontrado na tabela USUARIO: " + subject);
                     } else {
-                        logger.error("❌ Usuário não encontrado em nenhuma tabela: " + subject);
+                        log.error("Usuário não encontrado em nenhuma tabela: " + subject);
                     }
                 }
 
-                // Se não encontrou o usuário, rejeitar
                 if (userDetails == null) {
-                    logger.error("❌ UserDetails é NULL - rejeitando requisição");
+                    log.error("UserDetails é nulo - rejeitando requisição");
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuário não encontrado");
                     return;
                 }
 
-                // Criar autenticação com as authorities do UserDetails
                 var authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                logger.info("✅ Autenticação configurada com authorities: " + userDetails.getAuthorities());
+                log.info("Autenticação configurada com authorities: " + userDetails.getAuthorities());
 
             } catch (JWTVerificationException e) {
-                logger.error("❌ Token inválido: " + e.getMessage());
+                log.error("Token inválido: " + e.getMessage());
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token inválido");
                 return;
             } catch (Exception e) {
-                logger.error("❌ Erro ao processar token: " + e.getMessage());
+                log.error("Erro ao processar token: " + e.getMessage());
                 e.printStackTrace();
                 response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao processar token");
                 return;
