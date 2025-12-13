@@ -38,47 +38,36 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario adicionar(Usuario usuario) throws DataIntegrityViolationException {
         try {
-            // Validar antes de qualquer operação
             this.validar(usuario);
 
-            // ✅ VERIFICAR SE É ADMIN - salvar na tabela correta
             if (usuario.getRole() == UserRole.ADMIN) {
-                log.info("🔐 Detectado role ADMIN - salvando na tabela 'admin'");
+                log.info("Detectado role ADMIN");
 
-                // Verificar se já existe admin com esse usuário
                 if (this.adminRepository.findByUsuario(usuario.getUsuario()) != null) {
                     log.error("Admin já existe: {}", usuario.getUsuario());
                     throw new ValidacaoException("Usuário já cadastrado no sistema");
                 }
 
-                // Criar Admin ao invés de Usuario
                 String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getPassword());
                 Admin admin = new Admin(usuario.getUsuario(), encryptedPassword, usuario.getRole());
 
-                // Copiar dados adicionais se necessário
                 admin = this.adminRepository.save(admin);
                 log.info(Constantes.USUARIO_MSG_ADICIONADO + " como ADMIN: {}", admin.getUsuario());
 
-                // Retornar um Usuario "fake" para manter a compatibilidade
-                // (o método retorna Usuario, mas salvamos como Admin)
                 usuario.setPassword(encryptedPassword);
                 return usuario;
 
             } else {
-                // ✅ É USER normal - salvar na tabela 'usuario'
-                log.info("👤 Detectado role USER - salvando na tabela 'usuario'");
+                log.info("Detectado role USER");
 
-                // Verificar se o usuário já existe
                 if (this.usuarioRepository.findByUsuario(usuario.getUsuario()) != null) {
                     log.error("Usuário já existe: {}", usuario.getUsuario());
                     throw new ValidacaoException("Usuário já cadastrado no sistema");
                 }
 
-                // Criptografar a senha
                 String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getPassword());
                 usuario.setPassword(encryptedPassword);
 
-                // Salvar o usuário
                 usuario = this.usuarioRepository.save(usuario);
                 log.info(Constantes.USUARIO_MSG_ADICIONADO + ": {}", usuario.getUsuario());
                 this.usuarioRepository.flush();
